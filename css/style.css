@@ -1,0 +1,60 @@
+.loading{
+    text-align: center;
+    margin-top: 50px;
+}
+.loading .fa-spin{
+    font-size: 50px;
+}
+.view { margin:20px 0 10px;}
+.comman-table {
+	border: 1px solid #ddd;
+	font-size:16px;
+	color:#444;
+	font-family: 'Roboto', sans-serif;
+	margin-top:20px;
+}
+.comman-table > thead > tr:first-child {
+    background: #ebebeb;
+}
+.comman-table > thead > tr:first-child > th {
+    box-shadow: 0 -1px 0 0 rgba(255, 255, 255, 1) inset;
+    color: #2a2e31;
+    font-size: 16px;
+    font-weight: 600;
+}
+.comman-table.table>thead>tr>th {
+	border-bottom:1px;
+	padding:15px;
+}
+.comman-table > tbody > tr > td, .comman-table > tbody > tr > th, .comman-table > tfoot > tr > td, .comman-table > tfoot > tr > th, .comman-table > thead > tr > td, .comman-table > thead > tr > th {
+	border: 1px solid #ddd;
+}
+.comman-table > tbody > tr > th {
+	border: 1px solid #ddd;
+	padding:15px;
+}
+
+.comman-table > tbody > tr > td {
+	border: 1px solid #ddd;
+	padding:10px 15px 0 15px !important;
+	margin-bottom:0;
+	line-height:35px;
+}
+.comman-table > tbody > tr > td.lasttd {
+	padding-bottom:8px !important;
+}
+.comman-table > tbody > tr:nth-child(2n) > td {
+    background:#f5f5f5;
+    box-shadow: 0 -1px 0 0 rgba(255, 255, 255, 1) inset;
+}
+.comman-table .btn-danger {
+	padding:6px;
+}
+.pagination-row {
+	text-align:center;
+}
+.pagination { margin-top:0px;}
+.disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+}

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
+        <title>Person-CRUD</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+        <link rel="stylesheet"  href="css/style.css"/>
+        <link rel="stylesheet"  href="css/font-awesome.min.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.4.3/sweetalert2.css">
+         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css">
+    </head>
+    <body>
+        <div id="app" class="container-fluid">
+            <router-view class="view"></router-view>
+        </div>	  
+    <template id="person-listing-template">      
+        
+        <div>
+            <router-link :to="{ path: 'create' }" class="btn btn-primary">Add User</router-link>
+            
+            <table class="table comman-table">
+                <thead><tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>DOB</th>
+                        <th>ZipCode</th>
+                        <th class="col-sm-2">Actions</th>
+                    </tr></thead>
+                <tbody>
+                    
+                    <tr v-for="(person, index) in users">
+                        <td>{{person.attributes.firstname }}</td>
+                        <td>{{ person.attributes.lastname }}</td>
+                        <td> {{ person.attributes.dob }} </td>
+                        <td> {{ person.attributes.zipcode }} </td>
+                        <td>
+                <router-link :to="{ name: 'person', params: { id: person.id }}" class="btn btn-default btn-success">Edit</router-link>
+                <a class="btn btn-danger btn-xs" v-on:click="deletePerson(person,index)">Delete</a> 
+                </td>
+                </tr></tbody>
+            </table>
+            <div v-show="loading" class="loading">
+                  <i v-show="loading" class="fa fa-spinner fa-spin"></i>
+            </div>
+        </div>
+    </template>
+    <template id="person-creation-template">
+        <div>
+            <form>
+                <div class="form-group">
+                    <label for="personFirstName">First Name</label>
+                    <input type="text" v-validate="'required'" name="fname" class="form-control" id="personFirstName" placeholder="First Name" v-model="personFirstName">
+                    <span v-show="errors.has('fname')" class="help is-danger">{{ errors.first('fname') }}</span>
+                </div>
+                <div class="form-group">
+                    <label for="personLastName">Last Name</label>
+                    <input type="text" v-validate="'required'" name="lname" class="form-control" id="personLastName" placeholder="Last Name" v-model="personLastName">
+                    <span v-show="errors.has('lname')" class="help is-danger">{{ errors.first('lname') }}</span>
+                </div>
+                <div class="form-group">
+                    <label for="personDob">DOB</label>
+                    <input type="text" v-validate="'required'" type="text" name="dob" class="form-control" id="personDob" placeholder="DOB" v-model="personDob">
+                    <span v-show="errors.has('dob')" class="help is-danger">{{ errors.first('dob') }}</span>
+                </div>
+                <div class="form-group">
+                    <label for="zipCode">ZipCode</label>
+                    <input type="text" v-validate="'required|numeric'" type="text" name="zipcode" class="form-control" id="zipCode" placeholder="Zip Code" v-model="zipCode">
+                    <span v-show="errors.has('zipcode')" class="help is-danger">{{ errors.first('zipcode') }}</span>
+                </div>						
+                <button type="button" class="btn btn-success" v-on:click.once="createPersons">Save</button>
+                <router-link to="/" class="btn btn-primary"><i class="fa fa-hand-o-left" aria-hidden="true"></i> Back</router-link>
+            </form>
+        </div>
+    </template>	 
+    <template id="person-detail-template">				
+        <div>
+            Edit User
+            <router-link to="/">Homepage</router-link>
+            <form>
+                <div class="form-group">
+                    <label for="personFirstName">First Name</label>
+                    <input type="text" class="form-control" id="personFirstName" placeholder="First Name" v-model="personFirstName">
+                </div>
+                <div class="form-group">
+                    <label for="personLastName">Last Name</label>
+                    <input type="text" class="form-control" id="personLastName" placeholder="Last Name" v-model="personLastName">
+                </div>
+                <div class="form-group">
+                    <label for="personDob">DOB</label>
+                    <input type="text" class="form-control" id="personDob" placeholder="DOB" v-model="personDob">
+                </div>
+                <div class="form-group">
+                    <label for="personDob">ZipCode</label>
+                    <input type="text" class="form-control" id="personDob" placeholder="zipCode" v-model="zipCode">
+                </div>
+                <button type="button" class="btn btn-success" v-on:click.once="updatePerson">Update</button>
+                <router-link to="/" class="btn btn-primary"><i class="fa fa-hand-o-left" aria-hidden="true"></i> Back</router-link>
+            </form>				
+        </div>
+    </template>
+    <!-- Library module -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.3/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/2.0.1/vue-router.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.2.1/vue-resource.js"></script>
+    <script src="https://unpkg.com/bootstrap-vue/dist/bootstrap-vue.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/vee-validate/2.0.0-beta.25/vee-validate.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.4.3/sweetalert2.min.js"></script>
+    <script>
+        Vue.use(VeeValidate);
+    </script>
+    <!-- Application modules -->
+    <script src="js/app.js"></script>
+</body>
+</html>
